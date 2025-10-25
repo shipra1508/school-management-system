@@ -81,11 +81,5 @@ public class User {
 	public void setEmail(String emil) {
 		this.email = emil;
 	}
-	
-	
-	
-	
-
-
 
 }
