@@ -22,9 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        // Convert enum to Spring Security role string
-        String role = "ROLE_" + user.getRole().name(); // e.g-ROLE_ADMIN
+        String role = "ROLE_" + user.getRole().name(); 
 
         return new org.springframework.security.core.userdetails.User(
             user.getUsername(),

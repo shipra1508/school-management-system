@@ -1,9 +1,11 @@
 package com.school.authservice.dto;
 
 import com.school.authservice.enums.UserRole;
+import com.school.authservice.validation.ValidUserRole;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class SignUpDTO {
@@ -19,7 +21,9 @@ public class SignUpDTO {
 	@NotBlank(message = "Password is required")
 	@Size(min = 8, message = "Password must be at least 8 characters")
 	private String password;
-
+    
+	@NotNull(message = "Role is required")
+	@ValidUserRole(acceptedValues = {UserRole.STUDENT, UserRole.TEACHER}, message = "Only STUDENT or TEACHER roles are allowed")
 	private UserRole role;
 
 	public SignUpDTO(String username, String password, UserRole role, String email) {
