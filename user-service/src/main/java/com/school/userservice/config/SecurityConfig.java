@@ -1,6 +1,5 @@
 package com.school.userservice.config;
 
-import com.school.userservice.filter.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.school.userservice.filter.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +35,8 @@ public class SecurityConfig {
 
                 // Protect dashboard for authenticated students only
                 .requestMatchers("/students/dashboard").hasRole("STUDENT")
+                
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
                 // All other endpoints require authentication
                 .anyRequest().authenticated()
