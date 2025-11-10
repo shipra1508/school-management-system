@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.school.authservice.dto.SignUpDTO;
 import com.school.authservice.dto.StudentDTO;
+import com.school.authservice.dto.TeacherDTO;
 import com.school.authservice.entity.User;
 import com.school.authservice.mapper.UserMapper;
 import com.school.authservice.repository.UserRepository;
@@ -59,8 +60,7 @@ public class SignupServiceImpl implements SignupService {
             System.out.println("Syncing student to user-service: " + studentDTO.getUsername());
 
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON); // ✅ Required
-            // ❌ Do NOT set bearer token
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
             HttpEntity<StudentDTO> requestEntity = new HttpEntity<>(studentDTO, headers);
 
@@ -72,5 +72,27 @@ public class SignupServiceImpl implements SignupService {
                 e.printStackTrace();
             }
         }
+        else if ("TEACHER".equalsIgnoreCase(user.getRole().name())) {
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setUsername(user.getUsername());
+            teacherDTO.setEmail(user.getEmail());
+            teacherDTO.setGender("NOT_SPECIFIED");
+            teacherDTO.setSubject("UNKNOWN");
+            teacherDTO.setPhone("0000000000");
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<TeacherDTO> requestEntity = new HttpEntity<>(teacherDTO, headers);
+
+            try {
+                restTemplate.postForEntity("http://localhost:8082/teachers", requestEntity, Void.class);
+                System.out.println("Teacher sync successful");
+            } catch (Exception e) {
+                System.out.println("Teacher sync failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
     }
 }

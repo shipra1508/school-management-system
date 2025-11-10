@@ -32,9 +32,11 @@ public class SecurityConfig {
 
                 // Allow internal sync from auth-service without token
                 .requestMatchers(HttpMethod.POST, "/students").permitAll()
+                .requestMatchers(HttpMethod.POST, "/teachers").permitAll()
 
                 // Protect dashboard for authenticated students only
                 .requestMatchers("/students/dashboard").hasRole("STUDENT")
+                .requestMatchers("/teachers/dashboard").hasRole("TEACHER")
                 
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
