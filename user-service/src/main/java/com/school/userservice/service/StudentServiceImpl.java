@@ -1,5 +1,8 @@
 package com.school.userservice.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +50,20 @@ public class StudentServiceImpl implements StudentService {
 
 	    System.out.println("Saving student: " + student.getUsername());
 	    studentRepository.save(student);
+	}
+
+	@Override
+	public List<StudentDTO> searchByUsername(String username) {
+	    return studentRepository.findByUsernameContainingIgnoreCase(username).stream()
+	            .map(student -> studentMapper.toDTO(student))
+	            .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<StudentDTO> findByStudentClass(String studentClass) {
+	    return studentRepository.findByStudentClassContainingIgnoreCase(studentClass).stream()
+	        .map(student -> studentMapper.toDTO(student))
+	        .collect(Collectors.toList());
 	}
 
 

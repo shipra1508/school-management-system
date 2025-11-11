@@ -33,6 +33,9 @@ public class SecurityConfig {
                 // Allow internal sync from auth-service without token
                 .requestMatchers(HttpMethod.POST, "/students").permitAll()
                 .requestMatchers(HttpMethod.POST, "/teachers").permitAll()
+                .requestMatchers(HttpMethod.GET, "/students/search").hasRole("TEACHER")
+                .requestMatchers(HttpMethod.GET, "/students/class").hasRole("TEACHER")
+
 
                 // Protect dashboard for authenticated students only
                 .requestMatchers("/students/dashboard").hasRole("STUDENT")

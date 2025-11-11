@@ -1,5 +1,7 @@
 package com.school.userservice.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.school.userservice.dto.StudentDTO;
@@ -51,6 +54,21 @@ public class StudentController {
 		String username = auth.getName();
 		StudentDTO updated = studentService.updateStudentProfile(username, dto);
 		return ResponseEntity.ok(updated);
+	}
+
+	@Operation(summary = "Teachers can search student by name", description = "Allows teacher to search student by name", security = @SecurityRequirement(name = "bearerAuth"))
+	@GetMapping("/search")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<List<StudentDTO>> searchStudents(@RequestParam(name = "username") String username) {
+		List<StudentDTO> results = studentService.searchByUsername(username);
+		return ResponseEntity.ok(results);
+	}
+
+	@Operation(summary = "Teachers can search student by studentClass", description = "Allows teacher to search student by studentClass", security = @SecurityRequirement(name = "bearerAuth"))
+	@GetMapping("/class")
+	@PreAuthorize("hasRole('TEACHER')")
+	public ResponseEntity<List<StudentDTO>> getStudentsByClass(@RequestParam (name = "studentClass")String studentClass) {
+		return ResponseEntity.ok(studentService.findByStudentClass(studentClass));
 	}
 
 }
