@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.school.authservice.dto.AdminDTO;
 import com.school.authservice.dto.SignUpDTO;
 import com.school.authservice.dto.StudentDTO;
 import com.school.authservice.dto.TeacherDTO;
@@ -90,6 +91,26 @@ public class SignupServiceImpl implements SignupService {
                 System.out.println("Teacher sync successful");
             } catch (Exception e) {
                 System.out.println("Teacher sync failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        else if ("ADMIN".equalsIgnoreCase(user.getRole().name())) {
+            AdminDTO adminDTO = new AdminDTO();
+            adminDTO.setUsername(user.getUsername());
+            adminDTO.setEmail(user.getEmail());
+            adminDTO.setGender("NOT_SPECIFIED");
+            adminDTO.setPhone("0000000000");
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<AdminDTO> requestEntity = new HttpEntity<>(adminDTO, headers);
+
+            try {
+                restTemplate.postForEntity("http://localhost:8082/admins", requestEntity, Void.class);
+                System.out.println("Admin sync successful");
+            } catch (Exception e) {
+                System.out.println("Admin sync failed: " + e.getMessage());
                 e.printStackTrace();
             }
         }

@@ -23,7 +23,7 @@ public class SignUpDTO {
 	private String password;
     
 	@NotNull(message = "Role is required")
-	@ValidUserRole(acceptedValues = {UserRole.STUDENT, UserRole.TEACHER}, message = "Only STUDENT or TEACHER roles are allowed")
+	@ValidUserRole(acceptedValues = {UserRole.STUDENT, UserRole.TEACHER, UserRole.ADMIN}, message = "Only STUDENT,TEACHER, ADMIN roles are allowed")
 	private UserRole role;
 
 	public SignUpDTO(String username, String password, UserRole role, String email) {
