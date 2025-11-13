@@ -9,4 +9,6 @@ public interface TeacherService {
 	TeacherDTO updateTeacherProfile(String username, TeacherDTO dto);
 
 	void save(TeacherDTO teacherDTO);
+	
+	void deleteStudentByUsername(String username);
 }

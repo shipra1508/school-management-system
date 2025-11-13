@@ -34,9 +34,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/students").permitAll()
                 .requestMatchers(HttpMethod.POST, "/teachers").permitAll()
                 .requestMatchers(HttpMethod.POST, "/admins").permitAll()
+                
                 .requestMatchers(HttpMethod.GET, "/students/search").hasRole("TEACHER")
                 .requestMatchers(HttpMethod.GET, "/students/class").hasRole("TEACHER")
-
+                .requestMatchers(HttpMethod.DELETE, "/students/delete/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/teachers/delete/**").hasRole("ADMIN")
 
                 // Protect dashboard for authenticated students only
                 .requestMatchers("/students/dashboard").hasRole("STUDENT")

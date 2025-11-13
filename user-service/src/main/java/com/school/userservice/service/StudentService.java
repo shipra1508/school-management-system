@@ -16,4 +16,6 @@ public interface StudentService {
 	
 	List<StudentDTO> findByStudentClass(String studentClass);
 
+	void deleteStudentByUsername(String username);
+
 }

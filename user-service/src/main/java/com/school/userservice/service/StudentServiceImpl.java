@@ -65,6 +65,13 @@ public class StudentServiceImpl implements StudentService {
 	        .map(student -> studentMapper.toDTO(student))
 	        .collect(Collectors.toList());
 	}
+	
+	public void deleteStudentByUsername(String username) {
+	    Student student = studentRepository.findByUsername(username)
+	        .orElseThrow(() -> new RuntimeException("Student not found: " + username));
+	    studentRepository.delete(student);
+	}
+
 
 
 }

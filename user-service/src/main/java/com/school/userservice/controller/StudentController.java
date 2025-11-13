@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,5 +72,14 @@ public class StudentController {
 	public ResponseEntity<List<StudentDTO>> getStudentsByClass(@RequestParam (name = "studentClass")String studentClass) {
 		return ResponseEntity.ok(studentService.findByStudentClass(studentClass));
 	}
+	
+	@Operation(summary = "Delete student", description = "Allows admin to delete a student by username", security = @SecurityRequirement(name = "bearerAuth"))
+	@DeleteMapping("/delete/{username}")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Void> deleteStudent(@PathVariable("username") String username) {
+	    studentService.deleteStudentByUsername(username);
+	    return ResponseEntity.ok().build();
+	}
+
 
 }

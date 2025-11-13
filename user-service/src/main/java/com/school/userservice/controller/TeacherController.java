@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +53,14 @@ public class TeacherController {
 			String username = auth.getName();
 			TeacherDTO updated = teacherService.updateTeacherProfile(username, dto);
 			return ResponseEntity.ok(updated);
+		}
+		
+		@Operation(summary = "Delete teacher", description = "Allows admin to delete a teacher by username", security = @SecurityRequirement(name = "bearerAuth"))
+		@DeleteMapping("/delete/{username}")
+		@PreAuthorize("hasRole('ADMIN')")
+		public ResponseEntity<Void> deleteTeacher(@PathVariable("username") String username) {
+		    teacherService.deleteStudentByUsername(username);
+		    return ResponseEntity.ok().build();
 		}
 
 	}
