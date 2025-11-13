@@ -58,22 +58,22 @@ public class StudentController {
 		return ResponseEntity.ok(updated);
 	}
 
-	@Operation(summary = "Teachers can search student by name", description = "Allows teacher to search student by name", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Admin and Teachers can search student by name", description = "Allows admin and teachers to search student by name", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/search")
-	@PreAuthorize("hasRole('TEACHER')")
+	@PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
 	public ResponseEntity<List<StudentDTO>> searchStudents(@RequestParam(name = "username") String username) {
 		List<StudentDTO> results = studentService.searchByUsername(username);
 		return ResponseEntity.ok(results);
 	}
 
-	@Operation(summary = "Teachers can search student by studentClass", description = "Allows teacher to search student by studentClass", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Admin and Teachers can search student by studentClass", description = "Allows admin and teachers to search student by studentClass", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/class")
-	@PreAuthorize("hasRole('TEACHER')")
+	@PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
 	public ResponseEntity<List<StudentDTO>> getStudentsByClass(@RequestParam (name = "studentClass")String studentClass) {
 		return ResponseEntity.ok(studentService.findByStudentClass(studentClass));
 	}
 	
-	@Operation(summary = "Delete student", description = "Allows admin to delete a student by username", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "Admin can delete student records", description = "Allows admin to delete a student by username", security = @SecurityRequirement(name = "bearerAuth"))
 	@DeleteMapping("/delete/{username}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Void> deleteStudent(@PathVariable("username") String username) {
