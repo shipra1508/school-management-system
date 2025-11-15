@@ -16,6 +16,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleInvalidCredentials(InvalidCredentialsException ex) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
     }
+    
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
 
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();

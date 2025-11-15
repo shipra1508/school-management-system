@@ -13,7 +13,6 @@ import com.school.authservice.service.SignupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,21 +30,13 @@ public class SignupController {
 
 	@Operation(summary = "Register new user", description = "Registers a new user with role-based access. If role is STUDENT, syncs data to user-service.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "User registered successfully"),
-			@ApiResponse(responseCode = "400", description = "Invalid input or user already exists"),
-			@ApiResponse(responseCode = "500", description = "Internal server error") })
+		    @ApiResponse(responseCode = "409", description = "User already exists"),
+		    @ApiResponse(responseCode = "500", description = "Internal server error")})
 	@PostMapping("/signup")
 	public ResponseEntity<String> signup(@Valid @RequestBody SignUpDTO request, HttpServletRequest httpRequest) {
-		try {
 			String authHeader = httpRequest.getHeader("Authorization");
-			String token = null;
-			if (authHeader != null && authHeader.startsWith("Bearer ")) {
-				token = authHeader.substring(7); // remove "Bearer " prefix
-			}
-
+			String token = authHeader != null && authHeader.startsWith("Bearer ") ? authHeader.substring(7) : null;
 			signupService.signup(request, token);
 			return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-		} catch (RuntimeException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-	}
+		} 
 }

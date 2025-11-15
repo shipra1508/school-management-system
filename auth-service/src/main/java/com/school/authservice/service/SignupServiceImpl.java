@@ -13,6 +13,7 @@ import com.school.authservice.dto.SignUpDTO;
 import com.school.authservice.dto.StudentDTO;
 import com.school.authservice.dto.TeacherDTO;
 import com.school.authservice.entity.User;
+import com.school.authservice.exception.UserAlreadyExistsException;
 import com.school.authservice.mapper.UserMapper;
 import com.school.authservice.repository.UserRepository;
 
@@ -38,7 +39,7 @@ public class SignupServiceImpl implements SignupService {
     public void signup(SignUpDTO request, String token) {
         // Check for duplicate email
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new UserAlreadyExistsException("Email already exists");
         }
 
         // Map and save user
