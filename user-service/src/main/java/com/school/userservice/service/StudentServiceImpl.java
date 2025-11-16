@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.school.userservice.bo.StudentBO;
 import com.school.userservice.dto.StudentDTO;
 import com.school.userservice.entity.Student;
+import com.school.userservice.exception.StudentAlreadyExistsException;
 import com.school.userservice.exception.StudentNotFoundException;
 import com.school.userservice.mapper.StudentMapper;
 import com.school.userservice.repository.StudentRepository;
@@ -43,14 +44,17 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public void save(StudentDTO studentDTO) {
-	    Student student = new Student();
-	    student.setUsername(studentDTO.getUsername());
-	    student.setEmail(studentDTO.getEmail());
-	    student.setGender(studentDTO.getGender());
-	    student.setStudentClass(studentDTO.getStudentClass());
+		if (studentRepository.findByUsername(studentDTO.getUsername()).isPresent()) {
+			throw new StudentAlreadyExistsException(studentDTO.getUsername());
+		}
+		Student student = new Student();
+		student.setUsername(studentDTO.getUsername());
+		student.setEmail(studentDTO.getEmail());
+		student.setGender(studentDTO.getGender());
+		student.setStudentClass(studentDTO.getStudentClass());
 
-	    System.out.println("Saving student: " + student.getUsername());
-	    studentRepository.save(student);
+		System.out.println("Saving student: " + student.getUsername());
+		studentRepository.save(student);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.school.userservice.bo.TeacherBO;
 import com.school.userservice.dto.TeacherDTO;
 import com.school.userservice.entity.Student;
 import com.school.userservice.entity.Teacher;
+import com.school.userservice.exception.TeacherAlreadyExistsException;
 import com.school.userservice.exception.TeacherNotFoundException;
 import com.school.userservice.mapper.TeacherMapper;
 import com.school.userservice.repository.TeacherRepository;
@@ -41,6 +42,9 @@ public class TeacherServiceImpl implements TeacherService {
 
 	@Override
 	public void save(TeacherDTO teacherDTO) {
+	    if (teacherRepository.findByUsername(teacherDTO.getUsername()).isPresent()) {
+	        throw new TeacherAlreadyExistsException(teacherDTO.getUsername());
+	    }
 		Teacher teacher = new Teacher();
 		teacher.setUsername(teacherDTO.getUsername());
 		teacher.setGender(teacherDTO.getGender());

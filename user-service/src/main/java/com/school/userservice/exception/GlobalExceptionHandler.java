@@ -46,5 +46,16 @@ public class GlobalExceptionHandler {
 	    return ResponseEntity.status(HttpStatus.CONFLICT)
 	        .body(new ErrorResponse(LocalDateTime.now(), 409, "Admin already exists", List.of(ex.getMessage())));
 	}
+	@ExceptionHandler(StudentAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleStudentAlreadyExists(StudentAlreadyExistsException ex) {
+	    return ResponseEntity.status(HttpStatus.CONFLICT)
+	        .body(new ErrorResponse(LocalDateTime.now(), 409, "Student already exists", List.of(ex.getMessage())));
+	}
+	@ExceptionHandler(TeacherAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleTeacherAlreadyExists(TeacherAlreadyExistsException ex) {
+	    return ResponseEntity.status(HttpStatus.CONFLICT)
+	        .body(new ErrorResponse(LocalDateTime.now(), 409, "Teacher already exists", List.of(ex.getMessage())));
+	}
+
 
 }
