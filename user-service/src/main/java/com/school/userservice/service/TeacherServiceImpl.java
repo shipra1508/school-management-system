@@ -7,6 +7,7 @@ import com.school.userservice.bo.TeacherBO;
 import com.school.userservice.dto.TeacherDTO;
 import com.school.userservice.entity.Student;
 import com.school.userservice.entity.Teacher;
+import com.school.userservice.exception.TeacherNotFoundException;
 import com.school.userservice.mapper.TeacherMapper;
 import com.school.userservice.repository.TeacherRepository;
 
@@ -22,14 +23,14 @@ public class TeacherServiceImpl implements TeacherService {
 	@Override
 	public TeacherDTO getTeacherByUsername(String username) {
 		Teacher teacher = teacherRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Teacher not found"));
+				.orElseThrow(() -> new TeacherNotFoundException(username));
 		return teacherMapper.toDTO(teacher);
 	}
 
 	@Override
 	public TeacherDTO updateTeacherProfile(String username, TeacherDTO dto) {
 		Teacher teacher = teacherRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Teacher not found"));
+				.orElseThrow(() -> new TeacherNotFoundException(username));
 
 		TeacherBO bo = teacherMapper.toBO(dto);
 		teacherMapper.updateEntityFromBO(bo, teacher);
@@ -50,10 +51,10 @@ public class TeacherServiceImpl implements TeacherService {
 		teacherRepository.save(teacher);
 	}
 	
-	public void deleteStudentByUsername(String username) {
-	    Teacher student = teacherRepository.findByUsername(username)
-	        .orElseThrow(() -> new RuntimeException("Teacher not found: " + username));
-	    teacherRepository.delete(student);
+	public void deleteTeacherByUsername(String username) {
+	    Teacher teacher = teacherRepository.findByUsername(username)
+	        .orElseThrow(() -> new TeacherNotFoundException(username));
+	    teacherRepository.delete(teacher);
 	}
 
 }

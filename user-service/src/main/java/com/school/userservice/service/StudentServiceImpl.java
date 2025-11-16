@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.school.userservice.bo.StudentBO;
 import com.school.userservice.dto.StudentDTO;
 import com.school.userservice.entity.Student;
+import com.school.userservice.exception.StudentNotFoundException;
 import com.school.userservice.mapper.StudentMapper;
 import com.school.userservice.repository.StudentRepository;
 
@@ -24,14 +25,14 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public StudentDTO getStudentByUsername(String username) {
 		Student student = studentRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Student not found"));
+				.orElseThrow(() -> new StudentNotFoundException(username));
 		return studentMapper.toDTO(student);
 	}
 
 	@Override
 	public StudentDTO updateStudentProfile(String username, StudentDTO dto) {
 		Student student = studentRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Student not found"));
+				.orElseThrow(() -> new StudentNotFoundException(username));
 
 		StudentBO bo = studentMapper.toBO(dto); 
 		studentMapper.updateEntityFromBO(bo, student);
@@ -68,7 +69,7 @@ public class StudentServiceImpl implements StudentService {
 	
 	public void deleteStudentByUsername(String username) {
 	    Student student = studentRepository.findByUsername(username)
-	        .orElseThrow(() -> new RuntimeException("Student not found: " + username));
+	        .orElseThrow(() -> new StudentNotFoundException(username));
 	    studentRepository.delete(student);
 	}
 

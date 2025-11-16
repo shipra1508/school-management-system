@@ -59,7 +59,7 @@ public class TeacherController {
 		@DeleteMapping("/delete/{username}")
 		@PreAuthorize("hasRole('ADMIN')")
 		public ResponseEntity<Void> deleteTeacher(@PathVariable("username") String username) {
-		    teacherService.deleteStudentByUsername(username);
+		    teacherService.deleteTeacherByUsername(username);
 		    return ResponseEntity.ok().build();
 		}
 

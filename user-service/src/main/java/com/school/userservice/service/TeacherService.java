@@ -10,5 +10,5 @@ public interface TeacherService {
 
 	void save(TeacherDTO teacherDTO);
 	
-	void deleteStudentByUsername(String username);
+	void deleteTeacherByUsername(String username);
 }

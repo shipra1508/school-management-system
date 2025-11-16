@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.school.userservice.bo.AdminBO;
 import com.school.userservice.dto.AdminDTO;
 import com.school.userservice.entity.Admin;
+import com.school.userservice.exception.AdminNotFoundException;
 import com.school.userservice.mapper.AdminMapper;
 import com.school.userservice.repository.AdminRepository;
 
@@ -21,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminDTO getAdminByUsername(String username) {
 		Admin admin = adminRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Admin not found"));
+				.orElseThrow(() -> new AdminNotFoundException(username));
 		return adminMapper.toDTO(admin);
 	}
 
@@ -29,7 +30,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminDTO updateAdminProfile(String username, AdminDTO dto) {
 		Admin admin = adminRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("Admin not found"));
+				.orElseThrow(() -> new AdminNotFoundException(username));
 
 		AdminBO bo = adminMapper.toBO(dto);
 		adminMapper.updateEntityFromBO(bo, admin);

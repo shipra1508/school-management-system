@@ -23,4 +23,22 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(StudentNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleStudentNotFound(StudentNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorResponse(LocalDateTime.now(), 404, "Student not found", List.of(ex.getMessage())));
+	}
+
+	@ExceptionHandler(TeacherNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleTeacherNotFound(TeacherNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ErrorResponse(LocalDateTime.now(), 404, "Teacher not found", List.of(ex.getMessage())));
+	}
+
+	@ExceptionHandler(AdminNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleAdminNotFound(AdminNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(LocalDateTime.now(),
+				HttpStatus.NOT_FOUND.value(), "Admin not found", List.of(ex.getMessage())));
+	}
+
 }
