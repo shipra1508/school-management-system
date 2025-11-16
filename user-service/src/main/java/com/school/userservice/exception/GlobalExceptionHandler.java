@@ -40,5 +40,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(LocalDateTime.now(),
 				HttpStatus.NOT_FOUND.value(), "Admin not found", List.of(ex.getMessage())));
 	}
+	
+	@ExceptionHandler(AdminAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleAdminAlreadyExists(AdminAlreadyExistsException ex) {
+	    return ResponseEntity.status(HttpStatus.CONFLICT)
+	        .body(new ErrorResponse(LocalDateTime.now(), 409, "Admin already exists", List.of(ex.getMessage())));
+	}
 
 }
