@@ -1,11 +1,15 @@
 package com.school.courseservice.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.school.courseservice.dto.CourseDTO;
 import com.school.courseservice.entity.Course;
 import com.school.courseservice.exception.CourseAlreadyExistsException;
+import com.school.courseservice.exception.CourseNotFoundException;
 import com.school.courseservice.mapper.CourseMapper;
 import com.school.courseservice.repository.CourseRepository;
 
@@ -28,4 +32,46 @@ public class CourseServiceImpl implements CourseService {
 		Course saved = courseRepository.save(course);
 		return courseMapper.toDTO(saved);
 	}
+
+	@Override
+	public List<CourseDTO> getAllCourses() {
+		List<Course> courses = courseRepository.findAll();
+		List<CourseDTO> courseDTOs = new ArrayList<>();
+
+		for (Course course : courses) {
+			courseDTOs.add(courseMapper.toDTO(course));
+		}
+
+		return courseDTOs;
+	}
+
+	@Override
+	public List<CourseDTO> findCoursesByCode(String code) {
+		List<Course> courses = courseRepository.findByCourseCodeContainingIgnoreCase(code);
+		List<CourseDTO> courseDTOs = new ArrayList<>();
+		for (Course course : courses) {
+			courseDTOs.add(courseMapper.toDTO(course));
+		}
+		return courseDTOs;
+	}
+
+	@Override
+	public List<CourseDTO> findCoursesByName(String name) {
+		List<Course> courses = courseRepository.findByCourseNameContainingIgnoreCase(name);
+		List<CourseDTO> courseDTOs = new ArrayList<>();
+		for (Course course : courses) {
+			courseDTOs.add(courseMapper.toDTO(course));
+		}
+		return courseDTOs;
+	}
+
+	@Override
+	public CourseDTO updateCourse(String courseCode, CourseDTO updatedCourseDTO) {
+		Course existingCourse = courseRepository.findByCourseCode(courseCode)
+				.orElseThrow(() -> new CourseNotFoundException(courseCode));
+		existingCourse.setCourseName(updatedCourseDTO.getCourseName());
+		Course savedCourse = courseRepository.save(existingCourse);
+		return courseMapper.toDTO(savedCourse);
+	}
+
 }
