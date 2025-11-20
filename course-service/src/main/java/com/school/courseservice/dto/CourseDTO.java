@@ -11,7 +11,6 @@ public class CourseDTO {
 	@NotBlank(message = "Course code must not be blank")
 	private String courseCode;
 	
-	@NotNull(message = "Teacher ID must not be null")
 	private Long teacherId;
 
 

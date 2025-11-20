@@ -25,55 +25,66 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public CourseDTO createCourse(CourseDTO courseDTO) {
-		courseRepository.findByCourseCode(courseDTO.getCourseCode()).ifPresent(c -> {
-			throw new CourseAlreadyExistsException(courseDTO.getCourseCode());
-		});
+	    courseRepository.findByCourseCode(courseDTO.getCourseCode()).ifPresent(c -> {
+	        throw new CourseAlreadyExistsException(courseDTO.getCourseCode());
+	    });
 
-		Course course = courseMapper.toEntity(courseDTO);
-		Course saved = courseRepository.save(course);
-		return courseMapper.toDTO(saved);
+	    Course course = courseMapper.toEntity(courseDTO);
+	    Course saved = courseRepository.save(course);
+
+	    CourseBO bo = courseMapper.toBO(saved);
+	    return courseMapper.toDTO(bo);
 	}
 
 	@Override
 	public List<CourseDTO> getAllCourses() {
-		List<Course> courses = courseRepository.findAll();
-		List<CourseDTO> courseDTOs = new ArrayList<>();
+	    List<Course> courses = courseRepository.findAll();
+	    List<CourseDTO> courseDTOs = new ArrayList<>();
 
-		for (Course course : courses) {
-			courseDTOs.add(courseMapper.toDTO(course));
-		}
+	    for (Course course : courses) {
+	        CourseBO bo = courseMapper.toBO(course);
+	        courseDTOs.add(courseMapper.toDTO(bo));
+	    }
 
-		return courseDTOs;
+	    return courseDTOs;
 	}
 
 	@Override
 	public List<CourseDTO> findCoursesByCode(String code) {
-		List<Course> courses = courseRepository.findByCourseCodeContainingIgnoreCase(code);
-		List<CourseDTO> courseDTOs = new ArrayList<>();
-		for (Course course : courses) {
-			courseDTOs.add(courseMapper.toDTO(course));
-		}
-		return courseDTOs;
+	    List<Course> courses = courseRepository.findByCourseCodeContainingIgnoreCase(code);
+	    List<CourseDTO> courseDTOs = new ArrayList<>();
+	    for (Course course : courses) {
+	        CourseBO bo = courseMapper.toBO(course);
+	        courseDTOs.add(courseMapper.toDTO(bo));
+	    }
+	    return courseDTOs;
 	}
 
 	@Override
 	public List<CourseDTO> findCoursesByName(String name) {
-		List<Course> courses = courseRepository.findByCourseNameContainingIgnoreCase(name);
-		List<CourseDTO> courseDTOs = new ArrayList<>();
-		for (Course course : courses) {
-			courseDTOs.add(courseMapper.toDTO(course));
-		}
-		return courseDTOs;
+	    List<Course> courses = courseRepository.findByCourseNameContainingIgnoreCase(name);
+	    List<CourseDTO> courseDTOs = new ArrayList<>();
+	    for (Course course : courses) {
+	        CourseBO bo = courseMapper.toBO(course);
+	        courseDTOs.add(courseMapper.toDTO(bo));
+	    }
+	    return courseDTOs;
 	}
 
 	@Override
 	public CourseDTO updateCourse(String courseCode, CourseDTO updatedCourseDTO) {
-		Course existingCourse = courseRepository.findByCourseCode(courseCode)
-				.orElseThrow(() -> new CourseNotFoundException(courseCode));
-		existingCourse.setCourseName(updatedCourseDTO.getCourseName());
-		Course savedCourse = courseRepository.save(existingCourse);
-		return courseMapper.toDTO(savedCourse);
+	    Course existingCourse = courseRepository.findByCourseCode(courseCode)
+	            .orElseThrow(() -> new CourseNotFoundException(courseCode));
+
+	    CourseBO incomingBO = courseMapper.toBO(updatedCourseDTO);
+	    existingCourse.setCourseName(incomingBO.getCourseName());
+
+	    Course savedCourse = courseRepository.save(existingCourse);
+
+	    CourseBO bo = courseMapper.toBO(savedCourse);
+	    return courseMapper.toDTO(bo);
 	}
+
 
 	@Override
 	public CourseDTO registerTeacher(String courseCode, Long teacherId) {
