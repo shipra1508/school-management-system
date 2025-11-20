@@ -1,29 +1,20 @@
-package com.school.courseservice.bo;
+package com.school.courseservice.dto;
 
-public class CourseBO {
+public class TeacherAssignmentRequestDTO {
 
-	private String courseName;
 	private String courseCode;
 	private Long teacherId;
-
-	public CourseBO() {
+	
+	public TeacherAssignmentRequestDTO() {
+		
 	}
 
-	public CourseBO(String courseName, String courseCode, Long teacherId) {
+	public TeacherAssignmentRequestDTO(String courseCode, Long teacherId) {
 		super();
-		this.courseName = courseName;
 		this.courseCode = courseCode;
 		this.teacherId = teacherId;
 	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
+	
 	public String getCourseCode() {
 		return courseCode;
 	}

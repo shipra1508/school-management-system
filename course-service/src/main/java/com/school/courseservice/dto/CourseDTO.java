@@ -1,6 +1,7 @@
 package com.school.courseservice.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class CourseDTO {
 
@@ -9,14 +10,19 @@ public class CourseDTO {
 
 	@NotBlank(message = "Course code must not be blank")
 	private String courseCode;
+	
+	@NotNull(message = "Teacher ID must not be null")
+	private Long teacherId;
+
 
 	public CourseDTO() {
 
 	}
 
-	public CourseDTO(String courseName, String courseCode) {
+	public CourseDTO(String courseName, String courseCode,Long teacherId) {
 		this.courseName = courseName;
 		this.courseCode = courseCode;
+		this.teacherId = teacherId;
 	}
 
 	public String getCourseName() {
@@ -33,6 +39,14 @@ public class CourseDTO {
 
 	public void setCourseCode(String courseCode) {
 		this.courseCode = courseCode;
+	}
+
+	public Long getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(Long teacherId) {
+		this.teacherId = teacherId;
 	}
 
 }

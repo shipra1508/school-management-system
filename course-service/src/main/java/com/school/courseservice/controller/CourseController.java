@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.school.courseservice.dto.CourseDTO;
+import com.school.courseservice.dto.TeacherAssignmentRequestDTO;
 import com.school.courseservice.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -57,6 +58,12 @@ public class CourseController {
 			@RequestBody CourseDTO updatedCourseDTO) {
 		CourseDTO updated = courseService.updateCourse(courseCode, updatedCourseDTO);
 		return ResponseEntity.ok(updated);
+	}
+
+	@PostMapping("/registerTeacher")
+	public ResponseEntity<CourseDTO> registerTeacher(@RequestBody TeacherAssignmentRequestDTO request) {
+	    CourseDTO updated = courseService.registerTeacher(request.getCourseCode(), request.getTeacherId());
+	    return ResponseEntity.ok(updated);
 	}
 
 }

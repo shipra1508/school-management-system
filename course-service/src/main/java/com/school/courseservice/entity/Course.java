@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -20,16 +21,21 @@ public class Course {
 
     @Column(nullable = false)
     private String courseName;
+    
+    @Column(name = "teacher_id")
+    private Long teacherId;
 
-	public Course() {
 
-	}
-
-	public Course(Long id, String courseCode, String courseName) {
+	public Course(Long id, String courseCode, String courseName, Long teacherId) {
 		super();
 		this.id = id;
 		this.courseCode = courseCode;
 		this.courseName = courseName;
+		this.teacherId = teacherId;
+	}
+
+	public Course() {
+				
 	}
 
 	public Long getId() {
@@ -55,5 +61,14 @@ public class Course {
 	public void setCourseCode(String courseCode) {
 		this.courseCode = courseCode;
 	}
+
+	public Long getTeacherId() {
+		return teacherId;
+	}
+
+	public void setTeacherId(Long teacherId) {
+		this.teacherId = teacherId;
+	}
+	
 
 }

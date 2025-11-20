@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.school.courseservice.bo.CourseBO;
 import com.school.courseservice.dto.CourseDTO;
 import com.school.courseservice.entity.Course;
 import com.school.courseservice.exception.CourseAlreadyExistsException;
@@ -73,5 +74,18 @@ public class CourseServiceImpl implements CourseService {
 		Course savedCourse = courseRepository.save(existingCourse);
 		return courseMapper.toDTO(savedCourse);
 	}
+
+	@Override
+	public CourseDTO registerTeacher(String courseCode, Long teacherId) {
+	    Course course = courseRepository.findByCourseCode(courseCode)
+	            .orElseThrow(() -> new CourseNotFoundException(courseCode));
+
+	    course.setTeacherId(teacherId);
+	    Course savedCourse = courseRepository.save(course);
+
+	    CourseBO bo = courseMapper.toBO(savedCourse);  
+	    return courseMapper.toDTO(bo);                 
+	}
+
 
 }

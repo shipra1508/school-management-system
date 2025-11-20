@@ -10,4 +10,6 @@ public interface CourseService {
 	List<CourseDTO> findCoursesByCode(String code);
 	List<CourseDTO> findCoursesByName(String name);
     CourseDTO updateCourse(String courseCode, CourseDTO updatedCourseDTO);
+    CourseDTO registerTeacher(String courseCode, Long teacherId);
+
 }
