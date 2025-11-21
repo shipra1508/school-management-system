@@ -1,7 +1,9 @@
 package com.school.courseservice.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class CourseDTO {
 
@@ -13,15 +15,18 @@ public class CourseDTO {
 	
 	private Long teacherId;
 
+    private Set<Long> studentIds = new HashSet<>();
+
 
 	public CourseDTO() {
 
 	}
 
-	public CourseDTO(String courseName, String courseCode,Long teacherId) {
+	public CourseDTO(String courseName, String courseCode,Long teacherId, Set<Long> studentIds) {
 		this.courseName = courseName;
 		this.courseCode = courseCode;
 		this.teacherId = teacherId;
+		this.studentIds = studentIds;
 	}
 
 	public String getCourseName() {
@@ -47,5 +52,15 @@ public class CourseDTO {
 	public void setTeacherId(Long teacherId) {
 		this.teacherId = teacherId;
 	}
+
+	public Set<Long> getStudentIds() {
+		return studentIds;
+	}
+
+	public void setStudentIds(Set<Long> studentIds) {
+		this.studentIds = studentIds;
+	}
+	
+	
 
 }

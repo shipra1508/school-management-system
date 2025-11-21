@@ -1,10 +1,16 @@
 package com.school.courseservice.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 
@@ -24,15 +30,23 @@ public class Course {
     
     @Column(name = "teacher_id")
     private Long teacherId;
+    
+    
+    @ElementCollection
+    @CollectionTable(name = "course_student_ids", joinColumns = @JoinColumn(name = "course_id"))
+    @Column(name = "student_id")
+    private Set<Long> studentIds = new HashSet<>();
 
-
-	public Course(Long id, String courseCode, String courseName, Long teacherId) {
+    
+	public Course(Long id, String courseCode, String courseName, Long teacherId, Set<Long> studentIds) {
 		super();
 		this.id = id;
 		this.courseCode = courseCode;
 		this.courseName = courseName;
 		this.teacherId = teacherId;
+		this.studentIds = studentIds;
 	}
+
 
 	public Course() {
 				
@@ -69,6 +83,15 @@ public class Course {
 	public void setTeacherId(Long teacherId) {
 		this.teacherId = teacherId;
 	}
-	
+
+
+	public Set<Long> getStudentIds() {
+		return studentIds;
+	}
+
+
+	public void setStudentIds(Set<Long> studentIds) {
+		this.studentIds = studentIds;
+	}
 
 }

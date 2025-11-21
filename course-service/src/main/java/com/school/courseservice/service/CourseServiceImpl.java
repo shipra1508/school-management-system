@@ -14,6 +14,8 @@ import com.school.courseservice.exception.CourseNotFoundException;
 import com.school.courseservice.mapper.CourseMapper;
 import com.school.courseservice.repository.CourseRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -97,6 +99,20 @@ public class CourseServiceImpl implements CourseService {
 	    CourseBO bo = courseMapper.toBO(savedCourse);  
 	    return courseMapper.toDTO(bo);                 
 	}
+	
+	@Override
+	@Transactional
+	public CourseDTO studentEnroll(String courseCode, Long studentId) {
+	    Course course = courseRepository.findByCourseCode(courseCode)
+	        .orElseThrow(() -> new CourseNotFoundException(courseCode));
+
+	    course.getStudentIds().add(studentId);
+	    Course saved = courseRepository.save(course);
+
+	    CourseBO bo = courseMapper.toBO(saved);
+	    return courseMapper.toDTO(bo);
+	}
+
 
 
 }

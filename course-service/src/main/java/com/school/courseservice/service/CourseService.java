@@ -11,5 +11,6 @@ public interface CourseService {
 	List<CourseDTO> findCoursesByName(String name);
     CourseDTO updateCourse(String courseCode, CourseDTO updatedCourseDTO);
     CourseDTO registerTeacher(String courseCode, Long teacherId);
+	CourseDTO studentEnroll(String courseCode, Long studentId);
 
 }

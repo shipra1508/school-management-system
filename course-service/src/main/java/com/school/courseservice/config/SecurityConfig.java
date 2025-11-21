@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 // Only ADMIN can create courses
                 .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/courses/student-enroll").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 .requestMatchers(HttpMethod.GET, "/courses/listAllCourses").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 .requestMatchers(HttpMethod.GET, "/courses/findByCode/**").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 .requestMatchers(HttpMethod.GET, "/courses/findByName/**").hasAnyRole("ADMIN","TEACHER","STUDENT")
