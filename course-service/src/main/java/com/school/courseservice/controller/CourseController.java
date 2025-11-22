@@ -1,6 +1,7 @@
 package com.school.courseservice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,10 +69,10 @@ public class CourseController {
 	}
 	
 	@PostMapping("/student-enroll")
-	public ResponseEntity<CourseDTO> studentEnroll(
-	        @RequestBody StudentEnrollmentDTO request) {
-	    CourseDTO updated = courseService.studentEnroll(request.getCourseCode(), request.getStudentId());
-	    return ResponseEntity.ok(updated);
+	public ResponseEntity<Map<String, String>> studentEnroll(@RequestBody StudentEnrollmentDTO request) {
+	    courseService.studentEnroll(request.getCourseCode(), request.getStudentId());
+	    return ResponseEntity.status(HttpStatus.CREATED)
+	        .body(Map.of("message", "Registered successfully"));
 	}
 	
 	@GetMapping("/enrollment-details/{courseCode}")
