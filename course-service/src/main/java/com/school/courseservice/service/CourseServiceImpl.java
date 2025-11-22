@@ -122,6 +122,15 @@ public class CourseServiceImpl implements CourseService {
 	    CourseBO bo = courseMapper.toBO(course);
 	    return courseMapper.toDTO(bo);
 	}
+	
+	@Override
+	@Transactional
+	public void studentUnenroll(String courseCode, Long studentId) {
+	    Course course = courseRepository.findByCourseCode(courseCode)
+	        .orElseThrow(() -> new CourseNotFoundException(courseCode));
+	    course.getStudentIds().remove(studentId);
+	    courseRepository.save(course);
+	}
 
 
 

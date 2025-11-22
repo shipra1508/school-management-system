@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/courses/listAllCourses").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 .requestMatchers(HttpMethod.GET, "/courses/findByCode/**").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 .requestMatchers(HttpMethod.GET, "/courses/findByName/**").hasAnyRole("ADMIN","TEACHER","STUDENT")
+                .requestMatchers(HttpMethod.DELETE, "/courses/student-enroll").hasAnyRole("ADMIN","TEACHER","STUDENT")
                 // All other endpoints require authentication
                 .anyRequest().authenticated()
             )

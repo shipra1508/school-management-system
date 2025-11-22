@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,12 @@ public class CourseController {
 	public ResponseEntity<CourseDTO> getCourseEnrollmentDetails(@PathVariable ("courseCode")String courseCode) {
 	    CourseDTO details = courseService.getCourseEnrollmentDetails(courseCode);
 	    return ResponseEntity.ok(details);
+	}
+	
+	@DeleteMapping("/deleteStudent-enroll")
+	public ResponseEntity<Map<String, String>> studentUnenroll(@RequestBody StudentEnrollmentDTO request) {
+	    courseService.studentUnenroll(request.getCourseCode(), request.getStudentId());
+	    return ResponseEntity.ok(Map.of("message", "Unenrolled successfully"));
 	}
 
 
