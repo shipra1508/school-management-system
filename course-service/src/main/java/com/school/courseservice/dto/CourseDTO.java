@@ -28,6 +28,10 @@ public class CourseDTO {
 		this.teacherId = teacherId;
 		this.studentIds = studentIds;
 	}
+	
+    public int getTotalStudents() {
+        return studentIds != null ? studentIds.size() : 0;
+    }
 
 	public String getCourseName() {
 		return courseName;

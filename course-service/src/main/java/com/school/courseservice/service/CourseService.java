@@ -12,5 +12,6 @@ public interface CourseService {
     CourseDTO updateCourse(String courseCode, CourseDTO updatedCourseDTO);
     CourseDTO registerTeacher(String courseCode, Long teacherId);
 	CourseDTO studentEnroll(String courseCode, Long studentId);
+	CourseDTO getCourseEnrollmentDetails(String courseCode);
 
 }

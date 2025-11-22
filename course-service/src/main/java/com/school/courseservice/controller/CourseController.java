@@ -73,6 +73,14 @@ public class CourseController {
 	    CourseDTO updated = courseService.studentEnroll(request.getCourseCode(), request.getStudentId());
 	    return ResponseEntity.ok(updated);
 	}
+	
+	@GetMapping("/enrollment-details/{courseCode}")
+	@PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+	public ResponseEntity<CourseDTO> getCourseEnrollmentDetails(@PathVariable ("courseCode")String courseCode) {
+	    CourseDTO details = courseService.getCourseEnrollmentDetails(courseCode);
+	    return ResponseEntity.ok(details);
+	}
+
 
 
 
