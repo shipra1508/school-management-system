@@ -1,23 +1,30 @@
 package com.school.authservice.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.school.authservice.dto.SignUpDTO;
-import com.school.authservice.enums.UserRole;
-import com.school.authservice.service.SignupService;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.school.authservice.dto.SignUpDTO;
+import com.school.authservice.enums.UserRole;
+import com.school.authservice.exception.GlobalExceptionHandler;
+import com.school.authservice.exception.UserAlreadyExistsException;
+import com.school.authservice.service.SignupService;
 
 public class SignupControllerTest {
 
@@ -34,7 +41,9 @@ public class SignupControllerTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(signupController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(signupController)
+                .setControllerAdvice(new GlobalExceptionHandler()) 
+                .build();
         objectMapper = new ObjectMapper();
     }
 
@@ -69,14 +78,14 @@ public class SignupControllerTest {
         signUpDTO.setPassword("securePass123");
         signUpDTO.setRole(UserRole.TEACHER); 
 
-        doThrow(new RuntimeException("User already exists")).when(signupService).signup(any(SignUpDTO.class), anyString());
+        doThrow(new UserAlreadyExistsException("User already exists")).when(signupService).signup(any(SignUpDTO.class), anyString());
 
         mockMvc.perform(post("/auth/signup")
                 .header("Authorization", "Bearer mock-token")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signUpDTO)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("User already exists"));
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.error").value("User already exists"));
     }
 
     @Test
