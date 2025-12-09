@@ -1,0 +1,52 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true   
+
+      routes:
+        # AUTH-SERVICE (8081)
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+
+        # USER-SERVICE (8082)
+        - id: user-service-students
+          uri: lb://user-service
+          predicates:
+            - Path=/students/**
+
+        - id: user-service-teachers
+          uri: lb://user-service
+          predicates:
+            - Path=/teachers/**
+
+        - id: user-service-admins
+          uri: lb://user-service
+          predicates:
+            - Path=/admins/**
+
+        # COURSE-SERVICE (8083)
+        - id: course-service
+          uri: lb://course-service
+          predicates:
+            - Path=/courses/**
+
+        # ATTENDANCE-SERVICE (8084)
+        - id: attendance-service
+          uri: lb://attendance-service
+          predicates:
+            - Path=/attendance/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
