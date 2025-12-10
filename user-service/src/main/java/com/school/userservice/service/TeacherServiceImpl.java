@@ -47,6 +47,7 @@ public class TeacherServiceImpl implements TeacherService {
 	    }
 		Teacher teacher = new Teacher();
 		teacher.setUsername(teacherDTO.getUsername());
+		teacher.setEmail(teacherDTO.getEmail()); 
 		teacher.setGender(teacherDTO.getGender());
 		teacher.setSubject(teacherDTO.getSubject());
 		teacher.setPhone(teacherDTO.getPhone());
