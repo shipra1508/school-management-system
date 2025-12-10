@@ -76,9 +76,9 @@ public class StudentController {
 	@Operation(summary = "Admin can delete student records", description = "Allows admin to delete a student by username", security = @SecurityRequirement(name = "bearerAuth"))
 	@DeleteMapping("/delete/{username}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Void> deleteStudent(@PathVariable("username") String username) {
+	public ResponseEntity<String> deleteStudent(@PathVariable("username") String username) {
 	    studentService.deleteStudentByUsername(username);
-	    return ResponseEntity.ok().build();
+	    return ResponseEntity.ok("Deleted successfully");
 	}
 
 

@@ -58,9 +58,9 @@ public class TeacherController {
 		@Operation(summary = "Admin can delete teacher records", description = "Allows admin to delete a teacher by username", security = @SecurityRequirement(name = "bearerAuth"))
 		@DeleteMapping("/delete/{username}")
 		@PreAuthorize("hasRole('ADMIN')")
-		public ResponseEntity<Void> deleteTeacher(@PathVariable("username") String username) {
+		public ResponseEntity<String> deleteTeacher(@PathVariable("username") String username) {
 		    teacherService.deleteTeacherByUsername(username);
-		    return ResponseEntity.ok().build();
+		    return ResponseEntity.ok("Deleted successfully");
 		}
 
 	}
