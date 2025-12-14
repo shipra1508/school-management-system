@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: attendances-service
-
 eureka:
   client:
     service-url:
